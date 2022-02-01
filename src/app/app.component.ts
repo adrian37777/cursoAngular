@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { of } from 'rxjs';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ export class AppComponent {
   title = 'Curso Angular';
 
   constructor() {
- 
+
+
   }
 }
