@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, observable, Observer, subscribeOn, Subscriber } from 'rxjs';
+import { Observable, observable, Observer, Subject, subscribeOn, Subscriber } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { Observable, observable, Observer, subscribeOn, Subscriber } from 'rxjs'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Hola Adri que tal';
+  title = 'Curso Angular';
 
 
 
@@ -22,41 +22,52 @@ export class AppComponent {
 
     }
 
-    const intervalo$ = new Observable<number>(Subscriber =>{
-      // Crear contador 1,2,3,4 ....
 
-      let count = 0;
+    const intervalo$ = new Observable<number>(subs=>{
 
-    const interval =  setInterval(()=>{
+    const intervalID =  setInterval(()=>{
 
-        count++;
-        Subscriber.next(count);
-        console.log(count);
-      
+           subs.next(Math.random())
 
-      },2500);
+      },1000)
 
-      return ()=>{
+      return ()=> {
 
-        clearInterval(interval);
-        console.log('intervalo destruido')
+        clearInterval(intervalID)
+        console.log('intervalo destruido');
+  
+  
       }
-
     });
 
-    const subs1 = intervalo$.subscribe(console.log);
-    const subs2 = intervalo$.subscribe(console.log);
-    const subs3 = intervalo$.subscribe(console.log);
 
-    setTimeout(() => {
-      subs1.unsubscribe();
-      subs2.unsubscribe();
-      subs3.unsubscribe();  
-      
-      console.log('Completado Timeout')
-    }, 3000);
+    /**
+     * 1- Casteo mútiple
+     * 2- También es un observer
+     * 3- Next, error y complete
+     */
 
+
+
+    const subject$ = new Subject();
+
+    const subscription =  intervalo$.subscribe(subject$);
  
+
+     const subs1 =  subject$.subscribe(observer);
+     const subs2 =  subject$.subscribe(observer);
+
+  
+
+
+     setTimeout(()=>{
+
+      subject$.next(10);
+      subscription.unsubscribe();     
+      subject$.complete();
+
+
+     },3500)
 
 
   }  
